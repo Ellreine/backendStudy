@@ -34,6 +34,19 @@ async function removeNotes(id) {
     }
 }
 
+async function updateNote (id, newTitle) {
+    const notes = await getNotes();
+    const noteIndex = notes.findIndex(note => note.id === id);
+
+    if (noteIndex !== -1) {
+        notes[noteIndex].title = newTitle; // Обновление заголовка
+        await fs.writeFile(notesPath, JSON.stringify(notes));
+        console.log(chalk.bgGreen(`Note with id "${id}" updated`));
+    } else {
+        console.log(chalk.bgRed('No note found with that id'));
+    }
+}
+
 
 async function printNotes () {
     const notes = await getNotes()
@@ -46,6 +59,8 @@ async function printNotes () {
 
 module.exports = {
     addNote,
+    getNotes,
+    updateNote,
     printNotes,
     removeNotes
 }
